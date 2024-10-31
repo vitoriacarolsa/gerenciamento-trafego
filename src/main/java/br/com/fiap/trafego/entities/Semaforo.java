@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
 public class Semaforo {
     @Id
    @GeneratedValue
-//    (
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "SEQ_SEMAFORO"
-//    )
-//    @SequenceGenerator(
-//            name = "SEQ_SEMAFORO",
-//            sequenceName = "SEQ_SEMAFORO",
-//            allocationSize = 1
-//    )
+    (
+            strategy = GenerationType.SEQUENCE,
+            generator = "SEQ_SEMAFORO"
+    )
+    @SequenceGenerator(
+            name = "SEQ_SEMAFORO",
+            sequenceName = "SEQ_SEMAFORO",
+            allocationSize = 1
+    )
     private Long id;
     private String localizacao;
     @Column(name = "estado_atual")

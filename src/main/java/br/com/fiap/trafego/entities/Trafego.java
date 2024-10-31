@@ -16,15 +16,15 @@ public class Trafego {
 
     @Id
     @GeneratedValue
-//            (
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "SEQ_TRAFEGO"
-//    )
-//    @SequenceGenerator(
-//            name = "SEQ_TRAFEGO",
-//            sequenceName = "SEQ_TRAFEGO",
-//            allocationSize = 1
-//    )
+            (
+            strategy = GenerationType.SEQUENCE,
+            generator = "SEQ_TRAFEGO"
+    )
+    @SequenceGenerator(
+            name = "SEQ_TRAFEGO",
+            sequenceName = "SEQ_TRAFEGO",
+            allocationSize = 1
+    )
     private Long id;
     @Column(name = "data_hora")
     private LocalDateTime dataHora;

@@ -1,6 +1,5 @@
 package br.com.fiap.trafego.controllers;
 
-import br.com.fiap.trafego.dto.SemaforoDTO;
 import br.com.fiap.trafego.dto.TrafegoDTO;
 import br.com.fiap.trafego.services.TrafegoService;
 import jakarta.validation.Valid;
