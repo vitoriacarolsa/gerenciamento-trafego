@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/semaforos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/trafegos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/trafegos/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/usuarios").hasRole("ADMIN")
 
 
                         .anyRequest().authenticated()
