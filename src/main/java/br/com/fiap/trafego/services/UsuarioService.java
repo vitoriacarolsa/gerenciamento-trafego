@@ -4,14 +4,18 @@ import br.com.fiap.trafego.dto.UsuarioCadastroDTO;
 import br.com.fiap.trafego.dto.UsuarioExibicaoDTO;
 import br.com.fiap.trafego.entities.Usuario;
 import br.com.fiap.trafego.repositories.UsuarioRepository;
-import br.com.fiap.trafego.services.exceptions.UsuarioNaoEncontradoException;
+import br.com.fiap.trafego.services.exceptions.DatabaseException;
+import br.com.fiap.trafego.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -33,47 +37,37 @@ public class UsuarioService {
 
     }
 
-    public UsuarioExibicaoDTO buscarPorId(Long id){
-        Optional<Usuario> usuarioOptional =
-                usuarioRepository.findById(id);
-
-        if (usuarioOptional.isPresent()){
-            return new UsuarioExibicaoDTO(usuarioOptional.get());
-        } else {
-            throw new UsuarioNaoEncontradoException("Usuário não existe no banco de dados!");
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+        try {
+            usuarioRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
         }
     }
 
-
-    public List<UsuarioExibicaoDTO> listarTodos(){
-        return usuarioRepository
-                .findAll()
-                .stream()
-                .map(UsuarioExibicaoDTO::new)
-                .toList();
-    }
-
-    public void excluir(Long id){
-        Optional<Usuario> usuarioOptional =
-                usuarioRepository.findById(id);
-
-        if (usuarioOptional.isPresent()){
-            usuarioRepository.delete(usuarioOptional.get());
-        } else {
-            throw new RuntimeException("Produto não encontrado!");
+    @Transactional
+    public UsuarioExibicaoDTO update (Long id, UsuarioExibicaoDTO dto){
+        try{
+            Usuario entity= usuarioRepository.getReferenceById(id);
+            copyDtoToEntity (dto, entity);
+            entity= usuarioRepository.save(entity);
+            return new UsuarioExibicaoDTO(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Recurso não encontrado");
         }
+
     }
 
-    public Usuario atualizar(Usuario usuario){
-        Optional<Usuario> usuarioOptional =
-                usuarioRepository.findById(usuario.getUsuarioId());
+    private void copyDtoToEntity(UsuarioExibicaoDTO dto, Usuario entity){
+       entity.setNome(dto.nome());
+       entity.setEmail(dto.email());
 
-        if (usuarioOptional.isPresent()){
-            return usuarioRepository.save(usuario);
-        } else {
-            throw new RuntimeException("Usuário não encontrado!");
-        }
+
     }
-
 }
 

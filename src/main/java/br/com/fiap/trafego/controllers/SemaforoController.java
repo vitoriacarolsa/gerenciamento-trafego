@@ -30,7 +30,7 @@ public class SemaforoController {
         return ResponseEntity.ok(list);
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+
     @PostMapping
     public ResponseEntity <SemaforoDTO> insert(@Valid @RequestBody SemaforoDTO dto){
         dto= semaforoService.insert(dto);
@@ -39,14 +39,13 @@ public class SemaforoController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+
     @PutMapping (value= "/{id}")
     public ResponseEntity<SemaforoDTO> update (@PathVariable long id,@Valid @RequestBody SemaforoDTO dto){
         dto= semaforoService.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping (value= "/{id}")
     public ResponseEntity<Void> update (@PathVariable long id){
         semaforoService.delete(id);
