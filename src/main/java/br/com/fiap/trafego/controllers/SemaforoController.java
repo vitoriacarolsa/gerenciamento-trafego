@@ -47,7 +47,7 @@ public class SemaforoController {
     }
 
     @DeleteMapping (value= "/{id}")
-    public ResponseEntity<Void> update (@PathVariable long id){
+    public ResponseEntity<Void> delete (@PathVariable long id){
         semaforoService.delete(id);
         return ResponseEntity.noContent().build();
     }
