@@ -4,7 +4,7 @@ Este projeto é uma aplicação para controle de semáforos inteligentes, otimiz
 
 ## Funcionalidades
 
-- **Controle de Semáforos Inteligentes**: Ajuste dos semáforos com base no fluxo de tráfego.
+- **Controle de Semáforos Inteligentes**: Monitoramento dos semáforos com base no fluxo de tráfego.
 - **Monitoramento de Tráfego**: Análise em tempo real dos padrões de tráfego para otimização de rotas e redução de congestionamentos.
 
 ## Endpoints da API
