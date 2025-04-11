@@ -128,3 +128,4 @@ Este projeto é uma aplicação para controle de semáforos inteligentes, otimiz
     ```
 
 
+# trigger
