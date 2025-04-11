@@ -1,5 +1,10 @@
 name: Meu primeiro workflow
-on: push
+
+on:
+  push:
+    branches:
+      - main
+      - feature/primeira-action  
 
 jobs:
   job1-hello:
