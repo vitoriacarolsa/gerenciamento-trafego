@@ -1,0 +1,44 @@
+name: CI/CD 
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  build-and-test:
+    name: Compilar e Testar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar o código
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compilar o projeto
+        run: mvn clean install
+
+      - name: Rodar testes
+        run: mvn test
+
+  deploy:
+    name: Simular Deploy
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar o código
+        uses: actions/checkout@v3
+
+      - name: Simular Deploy para STAGING
+        if: github.ref == 'refs/heads/staging'
+        run: echo "🔧 Realizando deploy para ambiente STAGING..."
+
+      - name: Simular Deploy para PRODUÇÃO
+        if: github.ref == 'refs/heads/main'
+        run: echo "🚀 Realizando deploy para ambiente de PRODUÇÃO..."
