@@ -34,9 +34,9 @@ public class SemaforoController {
     @PostMapping
     public ResponseEntity <SemaforoDTO> insert(@Valid @RequestBody SemaforoDTO dto){
         dto= semaforoService.insert(dto);
-//        URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(dto.id()).toUri();
-//        return ResponseEntity.created(uri).body(dto);
+        URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.id()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 
