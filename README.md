@@ -1,130 +1,81 @@
 # Gerenciamento de Tráfego
 
-Este projeto é uma aplicação para controle de semáforos inteligentes, otimizando o fluxo de tráfego com base em padrões de tráfego e condições climáticas.
+Aplicação Java com Spring Boot para controle de semáforos inteligentes e análise de tráfego com base em condições climáticas e fluxo de veículos.
 
-## Funcionalidades
+## ✅ Funcionalidades
 
-- **Controle de Semáforos Inteligentes**: Monitoramento dos semáforos com base no fluxo de tráfego.
-- **Monitoramento de Tráfego**: Análise em tempo real dos padrões de tráfego para otimização de rotas e redução de congestionamentos.
+- Controle de Semáforos Inteligentes
+- Monitoramento de Tráfego em tempo real
+- API REST com endpoints para semáforos, tráfego e usuários
 
-## Endpoints da API
+---
 
-### Semáforos
+## 🔗 Endpoints da API
 
-- **Listar Semáforos**:
-    ```http
-    GET /semaforos
-    ```
+### 🚦 Semáforos
 
-- **Obter Semáforo por ID**:
-    ```http
-    GET /semaforos/{id}
-    ```
+- `GET /semaforos` — Listar semáforos  
+- `GET /semaforos/{id}` — Buscar por ID  
+- `POST /semaforos` — Criar novo semáforo  
+- `PUT /semaforos/{id}` — Atualizar estado  
+- `DELETE /semaforos/{id}` — Deletar semáforo
 
-- **Criar Novo Semáforo**:
-    ```http
-    POST /semaforos
-    ```
+### 🛣️ Tráfego
 
-    | Parâmetro    | Tipo    | Descrição                        |
-    | :----------- | :------ | :------------------------------- |
-    | `localizacao`| `string`| Localização do semáforo.        |
-    | `estadoAtual`| `string`| Estado atual do semáforo (vermelho, verde, amarelo). |
-    | `tempoVerde` | `integer`| Duração do tempo verde em segundos. |
-    | `tempoVermelho` | `integer`| Duração do tempo vermelho em segundos. |
-    | `condicoesClimaticas` | `string`| Condições climáticas no local. |
-    
-    ```json
-    {
-        "localizacao": "Av. Paulista, 1000",
-        "estadoAtual": "verde",
-        "tempoVerde": 30,
-        "tempoVermelho": 30,
-        "condicoesClimaticas": "ensolarado"
-    }
-    ```
+- `GET /trafegos` — Listar registros  
+- `GET /trafegos/{id}` — Buscar por ID  
+- `POST /trafegos` — Criar novo registro
 
-- **Atualizar Semáforo**:
-    ```http
-    PUT /semaforos/{id}
-    ```
+### 👤 Usuários
 
-    | Parâmetro    | Tipo    | Descrição                        |
-    | :----------- | :------ | :------------------------------- |
-    | `estadoAtual`| `string`| Novo estado do semáforo.        |
+- `PUT /usuarios/{id}` — Atualizar usuário  
+- `DELETE /usuarios/{id}` — Deletar usuário
 
-    ```json
-    {
-        "estadoAtual": "vermelho"
-    }
-    ```
+---
 
-- **Deletar Semáforo**:
-    ```http
-    DELETE /semaforos/{id}
-    ```
+## ▶️ Como rodar o projeto
 
-### Tráfego
+### 📦 Usando Docker
 
-- **Listar Registros de Tráfego**:
-    ```http
-    GET /trafegos
-    ```
+```bash
+mvn clean package
+docker build -t gerenciamento-trafego .
+docker run -p 8080:8080 gerenciamento-trafego
+```
 
-- **Obter Registro de Tráfego por ID**:
-    ```http
-    GET /trafegos/{id}
-    ```
+### 🐳 Usando Docker Compose
 
-- **Criar Novo Registro de Tráfego**:
-    ```http
-    POST /trafegos
-    ```
+```bash
+docker-compose up --build
+```
 
-    | Parâmetro        | Tipo       | Descrição                                      |
-    | :--------------- | :--------- | :--------------------------------------------- |
-    | `dataHora`      | `string`   | Data e hora do registro (formato ISO 8601).  |
-    | `localizacao`   | `string`   | Localização do registro de tráfego.           |
-    | `quantidadeVeiculo` | `integer`| Número de veículos em um determinado ponto.   |
-    | `velocidadeVeiculo` | `double` | Velocidade média dos veículos registrados.     |
-    | `congestionamento`  | `boolean` | Indica se há congestionamento (true/false).   |
+### 💻 Rodar localmente (sem Docker)
 
-    ```json
-    {
-        "dataHora": "2024-11-04T10:00:00Z",
-        "localizacao": "Av. Paulista, 1000",
-        "quantidadeVeiculo": 150,
-        "velocidadeVeiculo": 40.5,
-        "congestionamento": false
-    }
-    ```
+```bash
+mvn clean package
+java -jar target/trafego-0.0.1-SNAPSHOT.jar
+```
 
-### Usuários
+Acesse a aplicação em: [http://localhost:8080](http://localhost:8080)
 
-- **Deletar Usuário**:
-    ```http
-    DELETE /usuarios/{id}
-    ```
+---
 
-- **Atualizar Usuário**:
-    ```http
-    PUT /usuarios/{id}
-    ```
+## ⚙️ CI/CD com GitHub Actions
 
-    | Parâmetro    | Tipo    | Descrição                        |
-    | :----------- | :------ | :------------------------------- |
-    | `nome`       | `string`| Nome do usuário.                |
-    | `email`      | `string`| Email do usuário.               |
-    | `senha`      | `string`| Senha do usuário.               |
-    | `role`       | `string`| Papel do usuário (ex: ADMIN, USER). |
+O projeto possui pipeline de CI/CD configurado via GitHub Actions (`.github/workflows/ci-cd.yml`), com:
 
-    ```json
-    {
-        "nome": "João Silva",
-        "email": "joao.silva@example.com",
-        "senha": "senha123",
-        "role": "USER"
-    }
-    ```
+- Build automático ao fazer push na branch `main`
+- Testes automatizados 
+- Deploy automatizado para staging e produção
 
+Acompanhe a execução em **GitHub > Actions**.
 
+---
+
+## 🐳 Containerização
+
+- Dockerfile incluso para build da aplicação
+- Docker Compose opcional para orquestração
+- Executável em qualquer ambiente com Docker instalado
+
+---
