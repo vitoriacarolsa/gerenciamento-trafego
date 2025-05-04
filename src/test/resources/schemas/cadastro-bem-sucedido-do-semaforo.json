@@ -1,0 +1,85 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1746327684.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "id",
+    "localizacao",
+    "estadoAtual",
+    "tempoVerde",
+    "tempoVermelho",
+    "condicoesClimaticas",
+    "ultimaAtualizacao"
+  ],
+  "properties": {
+    "id": {
+      "$id": "#root/id",
+      "title": "Id",
+      "type": "integer",
+      "examples": [
+        1
+      ],
+      "default": 0
+    },
+    "localizacao": {
+      "$id": "#root/localizacao",
+      "title": "Localizacao",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "Av. Paulista, São Paulo"
+      ],
+      "pattern": "^.*$"
+    },
+    "estadoAtual": {
+      "$id": "#root/estadoAtual",
+      "title": "Estadoatual",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "verde"
+      ],
+      "pattern": "^.*$"
+    },
+    "tempoVerde": {
+      "$id": "#root/tempoVerde",
+      "title": "Tempoverde",
+      "type": "integer",
+      "examples": [
+        30
+      ],
+      "default": 0
+    },
+    "tempoVermelho": {
+      "$id": "#root/tempoVermelho",
+      "title": "Tempovermelho",
+      "type": "integer",
+      "examples": [
+        45
+      ],
+      "default": 0
+    },
+    "condicoesClimaticas": {
+      "$id": "#root/condicoesClimaticas",
+      "title": "Condicoesclimaticas",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "Ensolarado"
+      ],
+      "pattern": "^.*$"
+    },
+    "ultimaAtualizacao": {
+      "$id": "#root/ultimaAtualizacao",
+      "title": "Ultimaatualizacao",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "2024-10-27T23:22:27"
+      ],
+      "pattern": "^.*$"
+    }
+  }
+}
