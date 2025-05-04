@@ -7,6 +7,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import org.json.JSONException;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -54,12 +55,12 @@ public class CadastroSemaforoStep {
     }
 
     @E("que o arquivo de contrato esperado e o {string}")
-    public void queOArquivoDeContratoEsperadoEO(String contract) throws IOException{
+    public void queOArquivoDeContratoEsperadoEO(String contract) throws IOException, JSONException {
         cadastroSemaforoService.setContract(contract);
     }
 
     @Então("a resposta da requisicao deve estar em conformidade com o contrato selecionado")
-    public void aRespostaDaRequisicaoDeveEstarEmConformidadeComOContratoSelecionado() throws IOException{
+    public void aRespostaDaRequisicaoDeveEstarEmConformidadeComOContratoSelecionado() throws IOException, JSONException {
         Set<ValidationMessage> validateResponse = cadastroSemaforoService.validateResponseAgainstSchema();
         Assert.assertTrue("O contrato está inválido. Erros encontrados: " + validateResponse, validateResponse.isEmpty());
     }

@@ -82,21 +82,21 @@ public class CadastroSemaforoService {
                 .response();
     }
 
-    private JSONObject loadJsonFromFile(String filePath) throws IOException {
+    private JSONObject loadJsonFromFile(String filePath) throws IOException, JSONException {
         try (InputStream inputStream = Files.newInputStream(Paths.get(filePath))) {
-            JSONTokener tokener = new JSONTokener(inputStream);
+            JSONTokener tokener = new JSONTokener(inputStream.toString());
             return new JSONObject(tokener);
         }
     }
 
-    public void setContract(String contract) throws IOException {
+    public void setContract(String contract) throws IOException, JSONException {
         switch (contract) {
             case "Cadastro bem-sucedido do semaforo" -> jsonSchema = loadJsonFromFile(schemasPath + "cadastro-bem-sucedido-do-semaforo.json");
             default -> throw new IllegalStateException("Unexpected contract" + contract);
         }
     }
 
-    public Set<ValidationMessage> validateResponseAgainstSchema() throws IOException {
+    public Set<ValidationMessage> validateResponseAgainstSchema() throws IOException, JSONException {
 
         // Obter o corpo da resposta como String e converter para JSONObject
         JSONObject jsonResponse = new JSONObject(response.getBody().asString());
