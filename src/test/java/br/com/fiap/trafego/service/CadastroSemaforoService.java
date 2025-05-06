@@ -12,25 +12,22 @@ import com.networknt.schema.ValidationMessage;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import static io.restassured.RestAssured.given;
 
 public class CadastroSemaforoService {
 
     final SemaforoModel semaforoModel = new SemaforoModel();
-    public final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().
-            create();
+    public final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     String baseUrl = "http://localhost:8080";
     public Response response;
@@ -40,7 +37,6 @@ public class CadastroSemaforoService {
     JSONObject jsonSchema;
     private final ObjectMapper mapper = new ObjectMapper();
 
-
     public void setFieldsSemaforo(String field, String value) {
         switch (field) {
             case "localizacao" -> semaforoModel.setLocalizacao(value);
@@ -48,7 +44,7 @@ public class CadastroSemaforoService {
             case "tempoVerde" -> semaforoModel.setTempoVerde(Integer.valueOf(value));
             case "tempoVermelho" -> semaforoModel.setTempoVermelho(Integer.valueOf(value));
             case "condicoesClimaticas" -> semaforoModel.setCondicoesClimaticas(value);
-            case "ultimaAtualizacao" -> semaforoModel.setUltimaAtualizacao(LocalDateTime.parse(value));
+            case "ultimaAtualizacao" -> semaforoModel.setUltimaAtualizacao(value);
             default -> throw new IllegalStateException("Unexpected field");
         }
     }
@@ -82,36 +78,38 @@ public class CadastroSemaforoService {
                 .response();
     }
 
-    private JSONObject loadJsonFromFile(String filePath) throws IOException, JSONException {
-        try (InputStream inputStream = Files.newInputStream(Paths.get(filePath))) {
-            JSONTokener tokener = new JSONTokener(inputStream.toString());
-            return new JSONObject(tokener);
+    // CORRIGIDO: leitura correta do arquivo JSON
+    private JSONObject loadJsonFromFile(String filePath) throws IOException {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            String jsonContent = reader.lines().collect(Collectors.joining("\n"));
+            return new JSONObject(jsonContent);
+        } catch (JSONException e) {
+            throw new RuntimeException("Erro ao converter o conteúdo do arquivo em JSON: " + filePath, e);
         }
     }
 
-    public void setContract(String contract) throws IOException, JSONException {
+    public void setContract(String contract) throws IOException {
         switch (contract) {
-            case "Cadastro bem-sucedido do semaforo" -> jsonSchema = loadJsonFromFile(schemasPath + "cadastro-bem-sucedido-do-semaforo.json");
-            default -> throw new IllegalStateException("Unexpected contract" + contract);
+            case "Cadastro bem-sucedido do semaforo" ->
+                    jsonSchema = loadJsonFromFile(schemasPath + "cadastro-bem-sucedido-do-semaforo.json");
+            default ->
+                    throw new IllegalStateException("Unexpected contract: " + contract);
         }
     }
 
-    public Set<ValidationMessage> validateResponseAgainstSchema() throws IOException, JSONException {
+    public Set<ValidationMessage> validateResponseAgainstSchema() throws IOException {
+        JSONObject jsonResponse;
+        try {
+            jsonResponse = new JSONObject(response.getBody().asString());
+        } catch (JSONException e) {
+            throw new RuntimeException("Erro ao converter resposta em JSON", e);
+        }
 
-        // Obter o corpo da resposta como String e converter para JSONObject
-        JSONObject jsonResponse = new JSONObject(response.getBody().asString());
-        // Configurar o JsonSchemaFactory e criar o JsonSchema
         JsonSchemaFactory schemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
         JsonSchema schema = schemaFactory.getSchema(jsonSchema.toString());
-        // Converter o JSON de resposta para JsonNode
+
         JsonNode jsonResponseNode = mapper.readTree(jsonResponse.toString());
-        // Validar o JSON de resposta contra o esquema
-        Set<ValidationMessage> schemaValidationErrors = schema.validate(jsonResponseNode);
 
-        return schemaValidationErrors;
-
+        return schema.validate(jsonResponseNode);
     }
-
-
-
 }

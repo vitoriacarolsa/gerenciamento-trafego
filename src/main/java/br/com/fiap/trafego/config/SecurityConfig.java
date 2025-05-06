@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/semaforos/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/semaforos").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/semaforos/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/semaforos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/semaforos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/trafegos").permitAll()

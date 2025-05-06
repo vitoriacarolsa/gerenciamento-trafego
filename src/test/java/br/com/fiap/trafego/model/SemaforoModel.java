@@ -22,6 +22,6 @@ public class SemaforoModel {
     @Expose
     private String condicoesClimaticas;
     @Expose
-    private LocalDateTime ultimaAtualizacao;
+    private String ultimaAtualizacao;
 
 }

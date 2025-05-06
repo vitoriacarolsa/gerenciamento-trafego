@@ -54,13 +54,14 @@ public class CadastroSemaforoStep {
         cadastroSemaforoService.deleteSemaforo(endPoint);
     }
 
+
     @E("que o arquivo de contrato esperado e o {string}")
-    public void queOArquivoDeContratoEsperadoEO(String contract) throws IOException, JSONException {
+    public void queOArquivoDeContratoEsperadoEO(String contract) throws IOException {
         cadastroSemaforoService.setContract(contract);
     }
 
     @Então("a resposta da requisicao deve estar em conformidade com o contrato selecionado")
-    public void aRespostaDaRequisicaoDeveEstarEmConformidadeComOContratoSelecionado() throws IOException, JSONException {
+    public void aRespostaDaRequisicaoDeveEstarEmConformidadeComOContratoSelecionado() throws IOException {
         Set<ValidationMessage> validateResponse = cadastroSemaforoService.validateResponseAgainstSchema();
         Assert.assertTrue("O contrato está inválido. Erros encontrados: " + validateResponse, validateResponse.isEmpty());
     }
