@@ -26,7 +26,7 @@ Funcionalidade: Cadastro de novo semáforo inteligente
       | ultimaAtualizacao   | 22:27        |
     Quando eu enviar a requisicao para o endpoint "/semaforos"
     Então o status code da resposta deve ser 400
-    E o corpo da resposta de erro da api deve retornar a mensagem "formato invalidooo"
+    E o corpo da resposta de erro da api deve retornar a mensagem "formato invalido"
 
 
 
